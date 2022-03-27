@@ -11,7 +11,6 @@ import type {Node} from 'react';
 import {useState} from 'react';
 import {Button, Image} from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import {Picker as CityPicker} from '@react-native-picker/picker';
 
 import {
   SafeAreaView,
@@ -107,12 +106,6 @@ const App: () => Node = () => {
           setModelOpen(false);
         }}
       />
-      <CityPicker
-        selectedValue={city}
-        onValueChange={(itemValue, itemIndex) => setCity(itemValue)}>
-        <CityPicker.Item label="Java" value="Java" />
-        <CityPicker.Item label="JavaScript" value="JavaScript" />
-      </CityPicker>
     </SafeAreaView>
   );
 };
