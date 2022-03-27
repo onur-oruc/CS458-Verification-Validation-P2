@@ -11,6 +11,7 @@ import type {Node} from 'react';
 import {useState} from 'react';
 import {Button, Image} from 'react-native';
 import DatePicker from 'react-native-date-picker';
+import { RadioButton } from 'react-native-paper';
 
 import {
   SafeAreaView,
@@ -66,6 +67,7 @@ const App: () => Node = () => {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+    const [checked, setChecked] = React.useState('first');
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -79,7 +81,7 @@ const App: () => Node = () => {
         style={styles.input}
         onChangeText={onChangeName}
         value={name}
-        placeholder="Name"
+        placeholder="NameDJKD"
       />
       <TextInput
         style={styles.input}
@@ -87,6 +89,22 @@ const App: () => Node = () => {
         value={surname}
         placeholder="Surname"
       />
+        <View>
+            <RadioButton
+                value="first"
+                status={ checked === 'first' ? 'checked' : 'unchecked' }
+                onPress={() => setChecked('first')}
+            >
+                Male
+            </RadioButton>
+            <RadioButton
+                value="second"
+                status={ checked === 'second' ? 'checked' : 'unchecked' }
+                onPress={() => setChecked('second')}
+            >
+                Female
+            </RadioButton>
+        </View>
       <View style={styles.button}>
         <Button
           title="Select Birthday"
