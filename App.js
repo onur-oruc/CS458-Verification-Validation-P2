@@ -72,6 +72,8 @@ const App: () => Node = () => {
   const [value, setValue] = React.useState();
   const [selectedValue, setSelectedValue] = useState("none");
   const [selectedVaxValue, setSelectedVaxValue] = useState("none");
+  const [sideEffect, onChangeSideEffect] = useState('');
+  const [checkedPosCase, setCheckedPosCase] = React.useState();
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -187,6 +189,46 @@ const App: () => Node = () => {
 
             </Picker>
         </View>
+      <View style={styles.textAreaContainer} >
+        <TextInput
+          style={styles.textArea}
+          onChangeText={onChangeSideEffect}
+          value={sideEffect}
+          underlineColorAndroid="transparent"
+          placeholder="Any side effect after vaccination"
+          placeholderTextColor="red"
+          numberOfLines={2}
+          multiline={true}
+        />
+      </View>
+      <View>
+        <Text>
+          Any PCR positive cases after 3rd vaccination
+        </Text>
+      </View>
+      <View style={styles.radios}>
+
+        <View style={{flex: 0.1 }}>
+          <RadioButton
+            value="Yes"
+            status={ checkedPosCase === 'yes' ? 'checked' : 'unchecked' }
+            onPress={() => setCheckedPosCase('yes')}
+          />
+        </View>
+        <View style={{flex: 0.2}}>
+          <Text style={{fontSize: 20}}>Yes</Text>
+        </View>
+        <View style={{flex: 0.1 }}>
+          <RadioButton
+            value="No"
+            status={ checkedPosCase === 'no' ? 'checked' : 'unchecked' }
+            onPress={() => setCheckedPosCase('no')}
+          />
+        </View>
+        <View style={{flex: 0.3}}>
+          <Text style={{fontSize: 20}}>No</Text>
+        </View>
+      </View>
     </SafeAreaView>
   );
 };
@@ -230,7 +272,19 @@ const styles = StyleSheet.create({
   picker: {
     marginLeft: 40,
     marginRight: 40
-  }
+  },
+  textAreaContainer: {
+    borderColor: Colors.green,
+    marginLeft: 40,
+    marginRight: 40,
+
+    borderWidth: 1,
+    padding: 5
+  },
+  textArea: {
+    height: 100,
+    justifyContent: "flex-start"
+  },
 });
 
 export default App;
