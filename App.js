@@ -11,14 +11,15 @@ import type {Node} from 'react';
 import {useState} from 'react';
 import {Button, Image} from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import { RadioButton } from 'react-native-paper';
+import {RadioButton} from 'react-native-paper';
 
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text, TextInput,
+  Text,
+  TextInput,
   useColorScheme,
   View,
 } from 'react-native';
@@ -30,7 +31,8 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import {Picker} from "@react-native-picker/picker";
+import {Picker} from '@react-native-picker/picker';
+import {green50} from 'react-native-paper/lib/typescript/styles/colors';
 
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -70,170 +72,207 @@ const App: () => Node = () => {
   };
   const [checked, setChecked] = React.useState();
   const [value, setValue] = React.useState();
-  const [selectedValue, setSelectedValue] = useState("none");
-  const [selectedVaxValue, setSelectedVaxValue] = useState("none");
+  const [selectedValue, setSelectedValue] = useState('none');
+  const [selectedVaxValue, setSelectedVaxValue] = useState('none');
   const [sideEffect, onChangeSideEffect] = useState('');
   const [checkedPosCase, setCheckedPosCase] = React.useState();
+  const [symptoms, setSymptoms] = useState('');
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <Image
-        source={{
-          uri: 'https://reactnative.dev/docs/assets/p_cat2.png',
-        }}
-        style={{width: 200, height: 200}}
-      />
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeName}
-        value={name}
-        placeholder="Name"
-      />
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeSurname}
-        value={surname}
-        placeholder="Surname"
-      />
+    <SafeAreaView style={styles.background}>
+      <ScrollView>
+        <View style={{alignItems: 'center'}}>
+          <Image
+            source={{
+              uri: 'https://reactnative.dev/docs/assets/p_cat2.png',
+            }}
+            style={{width: 100, height: 100}}
+          />
+          <Text
+            style={{
+              marginLeft: 20,
+              marginRight: 30,
+              marginTop: 20,
+              fontSize: 25,
+              fontWeight: 'bold',
+            }}>
+            Covid-19 Vaccine Survey
+          </Text>
+        </View>
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangeName}
+          value={name}
+          placeholder="Name"
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangeSurname}
+          value={surname}
+          placeholder="Surname"
+        />
 
         <View style={styles.radios}>
-
-            <View style={{flex: 0.1 }}>
-                <RadioButton
-                    value="male"
-                    status={ checked === 'male' ? 'checked' : 'unchecked' }
-                    onPress={() => setChecked('male')}
-                />
-            </View>
-            <View style={{flex: 0.2}}>
-                <Text style={{fontSize: 24}}>Male</Text>
-            </View>
-            <View style={{flex: 0.1 }}>
-                <RadioButton
-                    value="female"
-                    status={ checked === 'female' ? 'checked' : 'unchecked' }
-                    onPress={() => setChecked('female')}
-                />
-            </View>
-            <View style={{flex: 0.3}}>
-                <Text style={{fontSize: 24}}>Female</Text>
-            </View>
-            <View style={{flex: 0.1 }}>
-                <RadioButton
-                    value="other"
-                    status={ checked === 'other' ? 'checked' : 'unchecked' }
-                    onPress={() => setChecked('other')}
-                />
-            </View>
-            <View style={{flex: 0.25}}>
-                <Text style={{fontSize: 24}}>Other</Text>
-            </View>
+          <View style={{flex: 0.1}}>
+            <RadioButton
+              value="male"
+              status={checked === 'male' ? 'checked' : 'unchecked'}
+              onPress={() => setChecked('male')}
+            />
+          </View>
+          <View style={{flex: 0.2}}>
+            <Text style={{fontSize: 24}}>Male</Text>
+          </View>
+          <View style={{flex: 0.1}}>
+            <RadioButton
+              value="female"
+              status={checked === 'female' ? 'checked' : 'unchecked'}
+              onPress={() => setChecked('female')}
+            />
+          </View>
+          <View style={{flex: 0.3}}>
+            <Text style={{fontSize: 24}}>Female</Text>
+          </View>
+          <View style={{flex: 0.1}}>
+            <RadioButton
+              value="other"
+              status={checked === 'other' ? 'checked' : 'unchecked'}
+              onPress={() => setChecked('other')}
+            />
+          </View>
+          <View style={{flex: 0.25}}>
+            <Text style={{fontSize: 24}}>Other</Text>
+          </View>
         </View>
 
-
-      <View style={styles.button}>
-        <Button
-          title="Select Birthday"
-          onPress={() => setModelOpen(true)}
+        <View style={styles.button}>
+          <Button title="Select Birthday" onPress={() => setModelOpen(true)} />
+        </View>
+        <DatePicker
+          modal
+          mode="date"
+          open={modelOpen}
+          date={date}
+          onConfirm={date => {
+            setModelOpen(false);
+            setDate(date);
+          }}
+          onCancel={() => {
+            setModelOpen(false);
+          }}
         />
-      </View>
-      <DatePicker
-        modal
-        mode="date"
-        open={modelOpen}
-        date={date}
-        onConfirm={date => {
-          setModelOpen(false);
-          setDate(date);
-        }}
-        onCancel={() => {
-          setModelOpen(false);
-        }}
-      />
         <View style={styles.picker}>
-            <Picker
-                selectedValue={selectedValue}
-                style={{ height: 50, width: 250 }}
-                onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-            >
-
-                <Picker.Item label="---Select Your City---" value="none" />
-                <Picker.Item label="Adana" value="adana" />
-                <Picker.Item label="Ankara" value="ankara" />
-                <Picker.Item label="Antalya" value="antalya" />
-                <Picker.Item label="Bursa" value="bursa" />
-                <Picker.Item label="Diyarbakır" value="diyarbakir" />
-                <Picker.Item label="Erzurum" value="erzurum" />
-                <Picker.Item label="Eskişehir" value="eskisehir" />
-                <Picker.Item label="Gaziantep" value="antep" />
-                <Picker.Item label="İstanbul" value="istanbul" />
-                <Picker.Item label="İzmir" value="izmir" />
-                <Picker.Item label="Kocaeli" value="kocaeli" />
-                <Picker.Item label="Konya" value="konya" />
-                <Picker.Item label="Mersin" value="mersin" />
-                <Picker.Item label="Ordu" value="ordu" />
-                <Picker.Item label="Samsun" value="samsun" />
-
-            </Picker>
+          <Picker
+            selectedValue={selectedValue}
+            style={{height: 50, width: 250}}
+            onValueChange={(itemValue, itemIndex) =>
+              setSelectedValue(itemValue)
+            }>
+            <Picker.Item label="---Select Your City---" value="none" />
+            <Picker.Item label="Adana" value="adana" />
+            <Picker.Item label="Ankara" value="ankara" />
+            <Picker.Item label="Antalya" value="antalya" />
+            <Picker.Item label="Bursa" value="bursa" />
+            <Picker.Item label="Diyarbakır" value="diyarbakir" />
+            <Picker.Item label="Erzurum" value="erzurum" />
+            <Picker.Item label="Eskişehir" value="eskisehir" />
+            <Picker.Item label="Gaziantep" value="antep" />
+            <Picker.Item label="İstanbul" value="istanbul" />
+            <Picker.Item label="İzmir" value="izmir" />
+            <Picker.Item label="Kocaeli" value="kocaeli" />
+            <Picker.Item label="Konya" value="konya" />
+            <Picker.Item label="Mersin" value="mersin" />
+            <Picker.Item label="Ordu" value="ordu" />
+            <Picker.Item label="Samsun" value="samsun" />
+          </Picker>
         </View>
         <View style={styles.picker}>
-            <Picker
-                selectedValue={selectedVaxValue}
-                style={{ height: 50, width: 250 }}
-                onValueChange={(itemValue, itemIndex) => setSelectedVaxValue(itemValue)}
-            >
-                <Picker.Item label="---Select Vaccine Type---" value="none" />
-                <Picker.Item label="Biontech" value="biontech" />
-                <Picker.Item label="Sinovac" value="sinovac" />
-                <Picker.Item label="Turkovac" value="turkovac" />
-
-            </Picker>
+          <Picker
+            selectedValue={selectedVaxValue}
+            style={{height: 50, width: 250}}
+            onValueChange={(itemValue, itemIndex) =>
+              setSelectedVaxValue(itemValue)
+            }>
+            <Picker.Item label="---Select Vaccine Type---" value="none" />
+            <Picker.Item label="Biontech" value="biontech" />
+            <Picker.Item label="Sinovac" value="sinovac" />
+            <Picker.Item label="Turkovac" value="turkovac" />
+          </Picker>
         </View>
-      <View style={styles.textAreaContainer} >
-        <TextInput
-          style={styles.textArea}
-          onChangeText={onChangeSideEffect}
-          value={sideEffect}
-          underlineColorAndroid="transparent"
-          placeholder="Any side effect after vaccination"
-          placeholderTextColor="red"
-          numberOfLines={2}
-          multiline={true}
-        />
-      </View>
-      <View>
-        <Text>
-          Any PCR positive cases after 3rd vaccination
-        </Text>
-      </View>
-      <View style={styles.radios}>
-
-        <View style={{flex: 0.1 }}>
-          <RadioButton
-            value="Yes"
-            status={ checkedPosCase === 'yes' ? 'checked' : 'unchecked' }
-            onPress={() => setCheckedPosCase('yes')}
+        <View style={styles.textAreaContainer}>
+          <TextInput
+            style={styles.textArea}
+            onChangeText={onChangeSideEffect}
+            value={sideEffect}
+            underlineColorAndroid="transparent"
+            placeholder="Any side effects after vaccination"
+            placeholderTextColor="red"
+            numberOfLines={2}
+            multiline={true}
           />
         </View>
-        <View style={{flex: 0.2}}>
-          <Text style={{fontSize: 20}}>Yes</Text>
+        <View>
+          <Text
+            style={{
+              marginLeft: 50,
+              marginRight: 30,
+              marginTop: 20,
+              fontSize: 15,
+              fontWeight: 'bold',
+            }}>
+            Any PCR positive cases after 3rd vaccination?
+          </Text>
         </View>
-        <View style={{flex: 0.1 }}>
-          <RadioButton
-            value="No"
-            status={ checkedPosCase === 'no' ? 'checked' : 'unchecked' }
-            onPress={() => setCheckedPosCase('no')}
-          />
+        <View style={styles.radios}>
+          <View style={{flex: 0.1}}>
+            <RadioButton
+              value="Yes"
+              status={checkedPosCase === 'yes' ? 'checked' : 'unchecked'}
+              onPress={() => setCheckedPosCase('yes')}
+            />
+          </View>
+          <View style={{flex: 0.2}}>
+            <Text style={{fontSize: 20}}>Yes</Text>
+          </View>
+          <View style={{flex: 0.1}}>
+            <RadioButton
+              value="No"
+              status={checkedPosCase === 'no' ? 'checked' : 'unchecked'}
+              onPress={() => setCheckedPosCase('no')}
+            />
+          </View>
+          <View style={{flex: 0.3}}>
+            <Text style={{fontSize: 20}}>No</Text>
+          </View>
         </View>
-        <View style={{flex: 0.3}}>
-          <Text style={{fontSize: 20}}>No</Text>
+        {checkedPosCase === 'yes' ? (
+          <View style={styles.textAreaContainer}>
+            <TextInput
+              style={styles.textArea}
+              onChangeText={setSymptoms}
+              value={symptoms}
+              underlineColorAndroid="transparent"
+              placeholder="Enter your symptoms"
+              placeholderTextColor="red"
+              numberOfLines={2}
+              multiline={true}
+            />
+          </View>
+        ) : (
+          <></>
+        )}
+        <View style={styles.submitButton}>
+          <Button title="Submit" color="#32cd32" onPress={() => {}} />
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    backgroundColor: Colors.white,
+  },
   sectionContainer: {
     marginTop: 32,
     paddingHorizontal: 24,
@@ -263,15 +302,15 @@ const styles = StyleSheet.create({
     marginRight: 40,
   },
   radios: {
-    flexDirection: "row",
+    flexDirection: 'row',
     height: 50,
     padding: 10,
     marginLeft: 40,
-    marginRight: 40
+    marginRight: 40,
   },
   picker: {
     marginLeft: 40,
-    marginRight: 40
+    marginRight: 40,
   },
   textAreaContainer: {
     borderColor: Colors.green,
@@ -279,11 +318,16 @@ const styles = StyleSheet.create({
     marginRight: 40,
 
     borderWidth: 1,
-    padding: 5
+    padding: 5,
   },
   textArea: {
     height: 100,
-    justifyContent: "flex-start"
+    justifyContent: 'flex-start',
+  },
+  submitButton: {
+    marginLeft: 40,
+    marginRight: 40,
+    marginBottom: 20,
   },
 });
 
