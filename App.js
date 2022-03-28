@@ -8,7 +8,7 @@
 
 import React from 'react';
 import type {Node} from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {Button, Image} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {RadioButton} from 'react-native-paper';
@@ -67,6 +67,20 @@ const App: () => Node = () => {
   const [date, setDate] = useState(new Date());
   const [modelOpen, setModelOpen] = useState(false);
   const [city, setCity] = useState('');
+  const months = {
+    0: 'Jan',
+    1: 'Feb',
+    2: 'Mar',
+    3: 'Apr',
+    4: 'May',
+    5: 'June',
+    6: 'July',
+    7: 'Aug',
+    8: 'Sep',
+    9: 'Oct',
+    10: 'Nov',
+    11: 'Dec',
+  };
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
@@ -77,7 +91,11 @@ const App: () => Node = () => {
   const [sideEffect, onChangeSideEffect] = useState('');
   const [checkedPosCase, setCheckedPosCase] = React.useState();
   const [symptoms, setSymptoms] = useState('');
-
+  useEffect(() => {
+    console.log(date.getDate());
+    console.log(date.getFullYear());
+    console.log(date.getMonth());
+  }, [date]);
   return (
     <SafeAreaView style={styles.background}>
       <ScrollView>
@@ -147,6 +165,7 @@ const App: () => Node = () => {
 
         <View style={styles.button}>
           <Button title="Select Birthday" onPress={() => setModelOpen(true)} />
+          <Text style={{marginTop: 10, fontStyle:'normal', fontSize: 17, fontWeight: 'bold'}}>{"Your Birthday: " + months[date.getMonth()]+ ". " + date.getDate()  + ", " + date.getFullYear()}</Text>
         </View>
         <DatePicker
           modal
