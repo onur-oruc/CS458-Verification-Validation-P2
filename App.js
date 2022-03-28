@@ -9,7 +9,7 @@
 import React from 'react';
 import type {Node} from 'react';
 import {useState, useEffect} from 'react';
-import {Button, Image} from 'react-native';
+import {Button, Image, Alert} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {RadioButton} from 'react-native-paper';
 
@@ -67,6 +67,11 @@ const App: () => Node = () => {
   const [date, setDate] = useState(new Date());
   const [modelOpen, setModelOpen] = useState(false);
   const [city, setCity] = useState('');
+  const [gender, setGender] = useState('');
+  const [selectedVaxValue, setSelectedVaxValue] = useState('');
+  const [sideEffect, onChangeSideEffect] = useState('');
+  const [checkedPosCase, setCheckedPosCase] = useState('');
+  const [symptoms, setSymptoms] = useState('')
   const months = {
     0: 'Jan',
     1: 'Feb',
@@ -84,13 +89,51 @@ const App: () => Node = () => {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-  const [checked, setChecked] = React.useState();
-  const [value, setValue] = React.useState();
-  const [selectedValue, setSelectedValue] = useState('none');
-  const [selectedVaxValue, setSelectedVaxValue] = useState('none');
-  const [sideEffect, onChangeSideEffect] = useState('');
-  const [checkedPosCase, setCheckedPosCase] = React.useState();
-  const [symptoms, setSymptoms] = useState('');
+  const createAlert = () => {
+    let alertMessage = '';
+    const emptyFields = [];
+    if (name === '') {
+      emptyFields.push('Name');
+    }
+    if (surname === '') {
+      emptyFields.push('Surname');
+    }
+    if (!date) {
+      emptyFields.push('Birthday');
+    }
+    if (city === '') {
+      emptyFields.push('City');
+    }
+    if (gender === '') {
+      emptyFields.push('Gender');
+    }
+    if (selectedVaxValue === '') {
+      emptyFields.push('Vaccine Type');
+    }
+    if (checkedPosCase === '') {
+      emptyFields.push('Positive cases after 3rd vaccination');
+    }
+    if (emptyFields.length == 0) {
+      onChangeName('');
+      onChangeSurname('');
+      setDate(new Date());
+      setCity('');
+      setGender('');
+      setSelectedVaxValue('');
+      setCheckedPosCase('');
+      Alert.alert('Your answers were successfully submitted');
+    } else {
+      for (let i = 0; i < emptyFields.length; i++) {
+        if (i == 0) {
+          alertMessage += 'Fill the following fields: ' + emptyFields[i];
+        } else {
+          alertMessage += ', ' + emptyFields[i];
+        }
+      }
+      Alert.alert('Missing Fields', alertMessage);
+    }
+  };
+
   useEffect(() => {
     console.log(date.getDate());
     console.log(date.getFullYear());
@@ -129,65 +172,18 @@ const App: () => Node = () => {
           value={surname}
           placeholder="Surname"
         />
-
-        <View style={styles.radios}>
-          <View style={{flex: 0.1}}>
-            <RadioButton
-              value="male"
-              status={checked === 'male' ? 'checked' : 'unchecked'}
-              onPress={() => setChecked('male')}
-            />
-          </View>
-          <View style={{flex: 0.2}}>
-            <Text style={{fontSize: 24}}>Male</Text>
-          </View>
-          <View style={{flex: 0.1}}>
-            <RadioButton
-              value="female"
-              status={checked === 'female' ? 'checked' : 'unchecked'}
-              onPress={() => setChecked('female')}
-            />
-          </View>
-          <View style={{flex: 0.3}}>
-            <Text style={{fontSize: 24}}>Female</Text>
-          </View>
-          <View style={{flex: 0.1}}>
-            <RadioButton
-              value="other"
-              status={checked === 'other' ? 'checked' : 'unchecked'}
-              onPress={() => setChecked('other')}
-            />
-          </View>
-          <View style={{flex: 0.25}}>
-            <Text style={{fontSize: 24}}>Other</Text>
-          </View>
-        </View>
-
         <View style={styles.button}>
           <Button title="Select Birthday" onPress={() => setModelOpen(true)} />
-          <Text style={{marginTop: 10, fontStyle:'normal', fontSize: 17, fontWeight: 'bold'}}>{"Your Birthday: " + months[date.getMonth()]+ ". " + date.getDate()  + ", " + date.getFullYear()}</Text>
+          <Text style={{marginTop: 10, fontStyle:'normal', fontSize: 17, fontWeight: 'bold'}}>{date ? ("Your Birthday: " + months[date.getMonth()]+ ". " + date.getDate()  + ", " + date.getFullYear()) : <></>}</Text>
         </View>
-        <DatePicker
-          modal
-          mode="date"
-          open={modelOpen}
-          date={date}
-          onConfirm={date => {
-            setModelOpen(false);
-            setDate(date);
-          }}
-          onCancel={() => {
-            setModelOpen(false);
-          }}
-        />
         <View style={styles.picker}>
           <Picker
-            selectedValue={selectedValue}
+            selectedValue={city}
             style={{height: 50, width: 250}}
             onValueChange={(itemValue, itemIndex) =>
-              setSelectedValue(itemValue)
+              setCity(itemValue)
             }>
-            <Picker.Item label="---Select Your City---" value="none" />
+            <Picker.Item label="---Select Your City---" value="" />
             <Picker.Item label="Adana" value="adana" />
             <Picker.Item label="Ankara" value="ankara" />
             <Picker.Item label="Antalya" value="antalya" />
@@ -205,6 +201,52 @@ const App: () => Node = () => {
             <Picker.Item label="Samsun" value="samsun" />
           </Picker>
         </View>
+        <View style={styles.radios}>
+          <View style={{flex: 0.1}}>
+            <RadioButton
+              value="male"
+              status={gender === 'male' ? 'checked' : 'unchecked'}
+              onPress={() => setGender('male')}
+            />
+          </View>
+          <View style={{flex: 0.2}}>
+            <Text style={{fontSize: 24}}>Male</Text>
+          </View>
+          <View style={{flex: 0.1}}>
+            <RadioButton
+              value="female"
+              status={gender === 'female' ? 'checked' : 'unchecked'}
+              onPress={() => setGender('female')}
+            />
+          </View>
+          <View style={{flex: 0.3}}>
+            <Text style={{fontSize: 24}}>Female</Text>
+          </View>
+          <View style={{flex: 0.1}}>
+            <RadioButton
+              value="other"
+              status={gender === 'other' ? 'checked' : 'unchecked'}
+              onPress={() => setGender('other')}
+            />
+          </View>
+          <View style={{flex: 0.25}}>
+            <Text style={{fontSize: 24}}>Other</Text>
+          </View>
+        </View>
+
+        <DatePicker
+          modal
+          mode="date"
+          open={modelOpen}
+          date={date}
+          onConfirm={date => {
+            setModelOpen(false);
+            setDate(date);
+          }}
+          onCancel={() => {
+            setModelOpen(false);
+          }}
+        />
         <View style={styles.picker}>
           <Picker
             selectedValue={selectedVaxValue}
@@ -212,7 +254,7 @@ const App: () => Node = () => {
             onValueChange={(itemValue, itemIndex) =>
               setSelectedVaxValue(itemValue)
             }>
-            <Picker.Item label="---Select Vaccine Type---" value="none" />
+            <Picker.Item label="---Select Vaccine Type---" value="" />
             <Picker.Item label="Biontech" value="biontech" />
             <Picker.Item label="Sinovac" value="sinovac" />
             <Picker.Item label="Turkovac" value="turkovac" />
@@ -281,7 +323,7 @@ const App: () => Node = () => {
           <></>
         )}
         <View style={styles.submitButton}>
-          <Button title="Submit" color="#32cd32" onPress={() => {}} />
+          <Button title="Send" color="#32cd32" onPress={createAlert} />
         </View>
       </ScrollView>
     </SafeAreaView>
