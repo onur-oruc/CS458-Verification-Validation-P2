@@ -30,6 +30,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {Picker} from "@react-native-picker/picker";
 
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -67,7 +68,10 @@ const App: () => Node = () => {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-    const [checked, setChecked] = React.useState('first');
+  const [checked, setChecked] = React.useState();
+  const [value, setValue] = React.useState();
+  const [selectedValue, setSelectedValue] = useState("none");
+  const [selectedVaxValue, setSelectedVaxValue] = useState("none");
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -81,7 +85,7 @@ const App: () => Node = () => {
         style={styles.input}
         onChangeText={onChangeName}
         value={name}
-        placeholder="NameDJKD"
+        placeholder="Name"
       />
       <TextInput
         style={styles.input}
@@ -89,22 +93,42 @@ const App: () => Node = () => {
         value={surname}
         placeholder="Surname"
       />
-        <View>
-            <RadioButton
-                value="first"
-                status={ checked === 'first' ? 'checked' : 'unchecked' }
-                onPress={() => setChecked('first')}
-            >
-                Male
-            </RadioButton>
-            <RadioButton
-                value="second"
-                status={ checked === 'second' ? 'checked' : 'unchecked' }
-                onPress={() => setChecked('second')}
-            >
-                Female
-            </RadioButton>
+
+        <View style={styles.radios}>
+
+            <View style={{flex: 0.1 }}>
+                <RadioButton
+                    value="male"
+                    status={ checked === 'male' ? 'checked' : 'unchecked' }
+                    onPress={() => setChecked('male')}
+                />
+            </View>
+            <View style={{flex: 0.2}}>
+                <Text style={{fontSize: 24}}>Male</Text>
+            </View>
+            <View style={{flex: 0.1 }}>
+                <RadioButton
+                    value="female"
+                    status={ checked === 'female' ? 'checked' : 'unchecked' }
+                    onPress={() => setChecked('female')}
+                />
+            </View>
+            <View style={{flex: 0.3}}>
+                <Text style={{fontSize: 24}}>Female</Text>
+            </View>
+            <View style={{flex: 0.1 }}>
+                <RadioButton
+                    value="other"
+                    status={ checked === 'other' ? 'checked' : 'unchecked' }
+                    onPress={() => setChecked('other')}
+                />
+            </View>
+            <View style={{flex: 0.25}}>
+                <Text style={{fontSize: 24}}>Other</Text>
+            </View>
         </View>
+
+
       <View style={styles.button}>
         <Button
           title="Select Birthday"
@@ -124,6 +148,45 @@ const App: () => Node = () => {
           setModelOpen(false);
         }}
       />
+        <View style={styles.picker}>
+            <Picker
+                selectedValue={selectedValue}
+                style={{ height: 50, width: 250 }}
+                onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+            >
+
+                <Picker.Item label="---Select Your City---" value="none" />
+                <Picker.Item label="Adana" value="adana" />
+                <Picker.Item label="Ankara" value="ankara" />
+                <Picker.Item label="Antalya" value="antalya" />
+                <Picker.Item label="Bursa" value="bursa" />
+                <Picker.Item label="Diyarbakır" value="diyarbakir" />
+                <Picker.Item label="Erzurum" value="erzurum" />
+                <Picker.Item label="Eskişehir" value="eskisehir" />
+                <Picker.Item label="Gaziantep" value="antep" />
+                <Picker.Item label="İstanbul" value="istanbul" />
+                <Picker.Item label="İzmir" value="izmir" />
+                <Picker.Item label="Kocaeli" value="kocaeli" />
+                <Picker.Item label="Konya" value="konya" />
+                <Picker.Item label="Mersin" value="mersin" />
+                <Picker.Item label="Ordu" value="ordu" />
+                <Picker.Item label="Samsun" value="samsun" />
+
+            </Picker>
+        </View>
+        <View style={styles.picker}>
+            <Picker
+                selectedValue={selectedVaxValue}
+                style={{ height: 50, width: 250 }}
+                onValueChange={(itemValue, itemIndex) => setSelectedVaxValue(itemValue)}
+            >
+                <Picker.Item label="---Select Vaccine Type---" value="none" />
+                <Picker.Item label="Biontech" value="biontech" />
+                <Picker.Item label="Sinovac" value="sinovac" />
+                <Picker.Item label="Turkovac" value="turkovac" />
+
+            </Picker>
+        </View>
     </SafeAreaView>
   );
 };
@@ -157,6 +220,17 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     marginRight: 40,
   },
+  radios: {
+    flexDirection: "row",
+    height: 50,
+    padding: 10,
+    marginLeft: 40,
+    marginRight: 40
+  },
+  picker: {
+    marginLeft: 40,
+    marginRight: 40
+  }
 });
 
 export default App;
