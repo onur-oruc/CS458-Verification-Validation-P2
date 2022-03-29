@@ -72,6 +72,7 @@ const App: () => Node = () => {
   const [sideEffect, onChangeSideEffect] = useState('');
   const [checkedPosCase, setCheckedPosCase] = useState('');
   const [symptoms, setSymptoms] = useState('');
+  const [disabled, setDisabled] = useState(false);
   const months = {
     0: 'Jan',
     1: 'Feb',
@@ -89,6 +90,30 @@ const App: () => Node = () => {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+  const isDisabled = () => {
+    if (name === '') {
+      return false;
+    }
+    if (surname === '') {
+      return false;
+    }
+    if (!date) {
+      return false;
+    }
+    if (city === '') {
+      return false;
+    }
+    if (gender === '') {
+      return false;
+    }
+    if (selectedVaxValue === '') {
+      return false;
+    }
+    if (checkedPosCase === '') {
+      return false;
+    }
+    return true;
+  }
   const createAlert = () => {
     let alertMessage = '';
     const emptyFields = [];
@@ -138,7 +163,8 @@ const App: () => Node = () => {
     console.log(date.getDate());
     console.log(date.getFullYear());
     console.log(date.getMonth());
-  }, [date]);
+    setDisabled(isDisabled());
+  }, [name, surname, date, city, gender, selectedVaxValue, checkedPosCase]);
   return (
     <SafeAreaView style={styles.background}>
       <ScrollView>
@@ -337,7 +363,8 @@ const App: () => Node = () => {
           </View>
         </View>
         {checkedPosCase === 'yes' ? (
-          <View style={styles.textAreaContainer}>
+          <View style={styles.textAreaContainer} accessibilityLabel={'symptomstextbox'}>
+
             <TextInput
               accessibilityLabel={'symptoms'}
               style={styles.textArea}
@@ -356,6 +383,7 @@ const App: () => Node = () => {
         <View style={styles.submitButton}>
           <Button
             title="Send"
+            disabled={!disabled}
             accessibilityLabel={'sendButton'}
             color="#32cd32"
             onPress={createAlert}
