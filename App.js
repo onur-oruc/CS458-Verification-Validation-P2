@@ -161,12 +161,14 @@ const App: () => Node = () => {
           </Text>
         </View>
         <TextInput
+          accessibilityLabel={ 'namebox' }
           style={styles.input}
           onChangeText={onChangeName}
           value={name}
           placeholder="Name"
         />
         <TextInput
+          accessibilityLabel={ 'surnamebox' }
           style={styles.input}
           onChangeText={onChangeSurname}
           value={surname}
