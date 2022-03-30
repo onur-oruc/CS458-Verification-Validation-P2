@@ -19,6 +19,76 @@ async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+async function invalidInputTest(client) {
+  const scrollup = '/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.NumberPicker[3]/android.widget.Button[1]'
+  const scrolldown = '/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.NumberPicker[3]'
+  const ankara = '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.appcompat.widget.LinearLayoutCompat/android.widget.FrameLayout/android.widget.ListView/android.widget.CheckedTextView[3]'
+  const confirmDate = '/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.Button[2]'
+  const biontech = '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.appcompat.widget.LinearLayoutCompat/android.widget.FrameLayout/android.widget.ListView/android.widget.CheckedTextView[2]'
+
+  await client.$('~namebox').setValue('Kubra');
+  await client.$('~surnamebox').setValue('Okumus');
+  await client.$('~cityPicker').click();
+  await sleep(200);
+  await client.$(ankara).click();
+  await client.$('~female').click();
+  await client.$('~vaxPicker').click();
+  await client.$(biontech).click();
+  await client.$('~no').click();
+
+  //invalid birthday test
+  await sleep(200);
+
+
+  await sleep(200)
+  isEnabled = await client.$('~sendButton').getAttribute('enabled')
+  try{
+    await assert.strictEqual(isEnabled, "true");
+    console.log("Send button is enabled after required fields are filled")
+  } catch (error) {
+    console.log('Error: ', error);
+  }
+
+
+  await client.$('~bdayButton').click();
+  for (var i = 0; i < 15; i++) {
+    await client.$(scroll).click();
+  }
+  await client.$(confirmDate).click();
+
+  //invalid name test
+
+
+
+  await client.$('~namebox').setValue('invalidname123');
+
+  isEnabled = await client.$('~sendButton').getAttribute('enabled')
+  try{
+    await assert.strictEqual(isEnabled, "false");
+    console.log("Send button is disabled because of the invalid name")
+  } catch (error) {
+    console.log('Error: ', error);
+  }
+
+  //invalid surname test
+  await client.$('~namebox').setValue('Kubra');
+  await client.$('~surnamebox').setValue('invalidsurname123');
+
+  isEnabled = await client.$('~sendButton').getAttribute('enabled')
+  try{
+    await assert.strictEqual(isEnabled, "false");
+    console.log("Send button is disabled because of the invalid surname")
+  } catch (error) {
+    console.log('Error: ', error);
+  }
+
+  await sleep(2000);
+
+}
+
+
+
+
 async function sendButtonTest(client) {
   const scroll = '/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.NumberPicker[3]/android.widget.Button[1]'
   const ankara = '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.appcompat.widget.LinearLayoutCompat/android.widget.FrameLayout/android.widget.ListView/android.widget.CheckedTextView[3]'
@@ -220,9 +290,9 @@ async function runTestCases() {
   const client = await wdio.remote(opts);
 
 
-  //await sendButtonTest(client)
+  await sendButtonTest(client)
   //await RadioButtonTest(client);
-  await PCRPosTestCase(client)
+  //await PCRPosTestCase(client)
 
 
 
