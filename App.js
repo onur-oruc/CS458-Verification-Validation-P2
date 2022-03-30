@@ -72,6 +72,7 @@ const App: () => Node = () => {
   const [sideEffect, onChangeSideEffect] = useState('');
   const [checkedPosCase, setCheckedPosCase] = useState('');
   const [symptoms, setSymptoms] = useState('');
+  const [disabled, setDisabled] = useState(false);
   const months = {
     0: 'Jan',
     1: 'Feb',
@@ -89,6 +90,30 @@ const App: () => Node = () => {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+  const isDisabled = () => {
+    if (name === '') {
+      return false;
+    }
+    if (surname === '') {
+      return false;
+    }
+    if (!date) {
+      return false;
+    }
+    if (city === '') {
+      return false;
+    }
+    if (gender === '') {
+      return false;
+    }
+    if (selectedVaxValue === '') {
+      return false;
+    }
+    if (checkedPosCase === '') {
+      return false;
+    }
+    return true;
+  }
   const createAlert = () => {
     let alertMessage = '';
     const emptyFields = [];
@@ -133,15 +158,13 @@ const App: () => Node = () => {
       Alert.alert('Missing Fields', alertMessage);
     }
   };
-  var day2 = new Date().getDate();
-  var month2 = new Date().getMonth + 1;
-  var year2 = new Date().getFullYear();
-  var today = year2 + '-' + month2 + '-' + day2;
+
   useEffect(() => {
     console.log(date.getDate());
     console.log(date.getFullYear());
     console.log(date.getMonth());
-  }, [date]);
+    setDisabled(isDisabled());
+  }, [name, surname, date, city, gender, selectedVaxValue, checkedPosCase]);
   return (
     <SafeAreaView style={styles.background}>
       <ScrollView>
@@ -163,6 +186,7 @@ const App: () => Node = () => {
             Covid-19 Vaccine Survey
           </Text>
         </View>
+
         <TextInput
           accessibilityLabel={'namebox'}
           style={styles.input}
@@ -178,7 +202,11 @@ const App: () => Node = () => {
           placeholder="Surname"
         />
         <View style={styles.button}>
-          <Button title="Select Birthday" onPress={() => setModelOpen(true)} />
+          <Button
+            title="Select Birthday"
+            onPress={() => setModelOpen(true)}
+            accessibilityLabel={'bdayButton'}
+          />
           <Text
             style={{
               marginTop: 10,
@@ -200,6 +228,7 @@ const App: () => Node = () => {
         </View>
         <View style={styles.picker}>
           <Picker
+            accessibilityLabel={'cityPicker'}
             selectedValue={city}
             style={{height: 50, width: 250}}
             onValueChange={(itemValue, itemIndex) => setCity(itemValue)}>
@@ -224,6 +253,7 @@ const App: () => Node = () => {
         <View style={styles.radios}>
           <View style={{flex: 0.1}}>
             <RadioButton
+              accessibilityLabel={'male'}
               value="male"
               status={gender === 'male' ? 'checked' : 'unchecked'}
               onPress={() => setGender('male')}
@@ -234,6 +264,7 @@ const App: () => Node = () => {
           </View>
           <View style={{flex: 0.1}}>
             <RadioButton
+              accessibilityLabel={'female'}
               value="female"
               status={gender === 'female' ? 'checked' : 'unchecked'}
               onPress={() => setGender('female')}
@@ -244,6 +275,7 @@ const App: () => Node = () => {
           </View>
           <View style={{flex: 0.1}}>
             <RadioButton
+              accessibilityLabel={'other'}
               value="other"
               status={gender === 'other' ? 'checked' : 'unchecked'}
               onPress={() => setGender('other')}
@@ -255,10 +287,10 @@ const App: () => Node = () => {
         </View>
 
         <DatePicker
+          maximumDate={new Date()}
           modal
           mode="date"
           open={modelOpen}
-          maximumDate={new Date()}
           date={date}
           onConfirm={date => {
             setModelOpen(false);
@@ -270,6 +302,7 @@ const App: () => Node = () => {
         />
         <View style={styles.picker}>
           <Picker
+            accessibilityLabel={'vaxPicker'}
             selectedValue={selectedVaxValue}
             style={{height: 50, width: 250}}
             onValueChange={(itemValue, itemIndex) =>
@@ -281,14 +314,27 @@ const App: () => Node = () => {
             <Picker.Item label="Turkovac" value="turkovac" />
           </Picker>
         </View>
+        <View>
+          <Text
+            style={{
+              marginLeft: 50,
+              marginRight: 30,
+              marginTop: 20,
+              fontSize: 15,
+              fontWeight: 'bold',
+            }}>
+            Any side effects after vaccination?
+          </Text>
+        </View>
         <View style={styles.textAreaContainer}>
           <TextInput
+            accessibilityLabel={'sideEffects'}
             style={styles.textArea}
             onChangeText={onChangeSideEffect}
             value={sideEffect}
             underlineColorAndroid="transparent"
-            placeholder="Any side effects after vaccination"
-            placeholderTextColor="red"
+            placeholder="Type here your symptoms"
+            placeholderTextColor="gray"
             numberOfLines={2}
             multiline={true}
           />
@@ -308,6 +354,7 @@ const App: () => Node = () => {
         <View style={styles.radios}>
           <View style={{flex: 0.1}}>
             <RadioButton
+              accessibilityLabel={'yes'}
               value="Yes"
               status={checkedPosCase === 'yes' ? 'checked' : 'unchecked'}
               onPress={() => setCheckedPosCase('yes')}
@@ -318,6 +365,7 @@ const App: () => Node = () => {
           </View>
           <View style={{flex: 0.1}}>
             <RadioButton
+              accessibilityLabel={'no'}
               value="No"
               status={checkedPosCase === 'no' ? 'checked' : 'unchecked'}
               onPress={() => setCheckedPosCase('no')}
@@ -328,14 +376,16 @@ const App: () => Node = () => {
           </View>
         </View>
         {checkedPosCase === 'yes' ? (
-          <View style={styles.textAreaContainer}>
+          <View style={styles.textAreaContainer} accessibilityLabel={'symptomstextbox'}>
+
             <TextInput
+              accessibilityLabel={'symptoms'}
               style={styles.textArea}
               onChangeText={setSymptoms}
               value={symptoms}
               underlineColorAndroid="transparent"
               placeholder="Enter your symptoms"
-              placeholderTextColor="red"
+              placeholderTextColor="gray"
               numberOfLines={2}
               multiline={true}
             />
@@ -344,7 +394,13 @@ const App: () => Node = () => {
           <></>
         )}
         <View style={styles.submitButton}>
-          <Button title="Send" color="#32cd32" onPress={createAlert} />
+          <Button
+            title="Send"
+            disabled={!disabled}
+            accessibilityLabel={'sendButton'}
+            color="#32cd32"
+            onPress={createAlert}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
