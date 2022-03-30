@@ -1,7 +1,9 @@
-
 const wdio = require('webdriverio');
 const assert = require('assert');
-const { assertBoolean, assertString } = require("@babel/core/lib/config/validation/option-assertions");
+const {
+  assertBoolean,
+  assertString,
+} = require('@babel/core/lib/config/validation/option-assertions');
 
 const opts = {
   path: '/wd/hub',
@@ -20,16 +22,20 @@ async function sleep(ms) {
 }
 
 async function sendButtonTest(client) {
-  const scroll = '/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.NumberPicker[3]/android.widget.Button[1]'
-  const ankara = '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.appcompat.widget.LinearLayoutCompat/android.widget.FrameLayout/android.widget.ListView/android.widget.CheckedTextView[3]'
-  const confirmDate = '/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.Button[2]'
-  const biontech = '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.appcompat.widget.LinearLayoutCompat/android.widget.FrameLayout/android.widget.ListView/android.widget.CheckedTextView[2]'
+  const scroll =
+    '/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.NumberPicker[3]/android.widget.Button[1]';
+  const ankara =
+    '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.appcompat.widget.LinearLayoutCompat/android.widget.FrameLayout/android.widget.ListView/android.widget.CheckedTextView[3]';
+  const confirmDate =
+    '/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.Button[2]';
+  const biontech =
+    '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.appcompat.widget.LinearLayoutCompat/android.widget.FrameLayout/android.widget.ListView/android.widget.CheckedTextView[2]';
 
   // check whether the send button is enabled
-  let isEnabled = await client.$('~sendButton').getAttribute('enabled')
-  try{
-    await assert.strictEqual(isEnabled, "false");
-    console.log("Send button is not enabled at the beginnng")
+  let isEnabled = await client.$('~sendButton').getAttribute('enabled');
+  try {
+    await assert.strictEqual(isEnabled, 'false');
+    console.log('Send button is not enabled at the beginnng');
   } catch (error) {
     console.log('Error: ', error);
   }
@@ -55,28 +61,26 @@ async function sendButtonTest(client) {
 
   await client.$('~no').click();
 
-  await sleep(200)
-  isEnabled = await client.$('~sendButton').getAttribute('enabled')
-  try{
-    await assert.strictEqual(isEnabled, "true");
-    console.log("Send button is enabled after required fields are filled")
+  await sleep(200);
+  isEnabled = await client.$('~sendButton').getAttribute('enabled');
+  try {
+    await assert.strictEqual(isEnabled, 'true');
+    console.log('Send button is enabled after required fields are filled');
   } catch (error) {
     console.log('Error: ', error);
   }
 
   await client.$('~namebox').setValue('');
 
-  isEnabled = await client.$('~sendButton').getAttribute('enabled')
-  try{
-    await assert.strictEqual(isEnabled, "false");
-    console.log("Send button is disabled after lefting the name field empty")
+  isEnabled = await client.$('~sendButton').getAttribute('enabled');
+  try {
+    await assert.strictEqual(isEnabled, 'false');
+    console.log('Send button is disabled after lefting the name field empty');
   } catch (error) {
     console.log('Error: ', error);
   }
 
-
   await sleep(2000);
-
 }
 
 async function RadioButtonTest(client) {
@@ -219,12 +223,9 @@ async function PCRPosTestCase(client) {
 async function runTestCases() {
   const client = await wdio.remote(opts);
 
-
   //await sendButtonTest(client)
   //await RadioButtonTest(client);
-  await PCRPosTestCase(client)
-
-
+  await PCRPosTestCase(client);
 
   await client.deleteSession();
 }

@@ -112,8 +112,14 @@ const App: () => Node = () => {
     if (checkedPosCase === '') {
       return false;
     }
+    if (!validateNameUserName(name)) {
+      return false;
+    }
+    if (!validateNameUserName(surname)) {
+      return false;
+    }
     return true;
-  }
+  };
   const createAlert = () => {
     let alertMessage = '';
     const emptyFields = [];
@@ -158,7 +164,9 @@ const App: () => Node = () => {
       Alert.alert('Missing Fields', alertMessage);
     }
   };
-
+  const validateNameUserName = (text) => {
+    return (/^[a-zA-Z]+$/.test(text));
+  };
   useEffect(() => {
     console.log(date.getDate());
     console.log(date.getFullYear());
@@ -376,8 +384,9 @@ const App: () => Node = () => {
           </View>
         </View>
         {checkedPosCase === 'yes' ? (
-          <View style={styles.textAreaContainer} accessibilityLabel={'symptomstextbox'}>
-
+          <View
+            style={styles.textAreaContainer}
+            accessibilityLabel={'symptomstextbox'}>
             <TextInput
               accessibilityLabel={'symptoms'}
               style={styles.textArea}
