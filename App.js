@@ -71,7 +71,7 @@ const App: () => Node = () => {
   const [selectedVaxValue, setSelectedVaxValue] = useState('');
   const [sideEffect, onChangeSideEffect] = useState('');
   const [checkedPosCase, setCheckedPosCase] = useState('');
-  const [symptoms, setSymptoms] = useState('')
+  const [symptoms, setSymptoms] = useState('');
   const months = {
     0: 'Jan',
     1: 'Feb',
@@ -133,7 +133,10 @@ const App: () => Node = () => {
       Alert.alert('Missing Fields', alertMessage);
     }
   };
-
+  var day2 = new Date().getDate();
+  var month2 = new Date().getMonth + 1;
+  var year2 = new Date().getFullYear();
+  var today = year2 + '-' + month2 + '-' + day2;
   useEffect(() => {
     console.log(date.getDate());
     console.log(date.getFullYear());
@@ -161,14 +164,14 @@ const App: () => Node = () => {
           </Text>
         </View>
         <TextInput
-          accessibilityLabel={ 'namebox' }
+          accessibilityLabel={'namebox'}
           style={styles.input}
           onChangeText={onChangeName}
           value={name}
           placeholder="Name"
         />
         <TextInput
-          accessibilityLabel={ 'surnamebox' }
+          accessibilityLabel={'surnamebox'}
           style={styles.input}
           onChangeText={onChangeSurname}
           value={surname}
@@ -176,15 +179,30 @@ const App: () => Node = () => {
         />
         <View style={styles.button}>
           <Button title="Select Birthday" onPress={() => setModelOpen(true)} />
-          <Text style={{marginTop: 10, fontStyle:'normal', fontSize: 17, fontWeight: 'bold'}}>{date ? ("Your Birthday: " + months[date.getMonth()]+ ". " + date.getDate()  + ", " + date.getFullYear()) : <></>}</Text>
+          <Text
+            style={{
+              marginTop: 10,
+              fontStyle: 'normal',
+              fontSize: 17,
+              fontWeight: 'bold',
+            }}>
+            {date ? (
+              'Your Birthday: ' +
+              months[date.getMonth()] +
+              '. ' +
+              date.getDate() +
+              ', ' +
+              date.getFullYear()
+            ) : (
+              <></>
+            )}
+          </Text>
         </View>
         <View style={styles.picker}>
           <Picker
             selectedValue={city}
             style={{height: 50, width: 250}}
-            onValueChange={(itemValue, itemIndex) =>
-              setCity(itemValue)
-            }>
+            onValueChange={(itemValue, itemIndex) => setCity(itemValue)}>
             <Picker.Item label="---Select Your City---" value="" />
             <Picker.Item label="Adana" value="adana" />
             <Picker.Item label="Ankara" value="ankara" />
@@ -240,6 +258,7 @@ const App: () => Node = () => {
           modal
           mode="date"
           open={modelOpen}
+          maximumDate={new Date()}
           date={date}
           onConfirm={date => {
             setModelOpen(false);

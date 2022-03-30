@@ -1,5 +1,5 @@
-const wdio = require("webdriverio");
-const assert = require("assert");
+const wdio = require('webdriverio');
+const assert = require('assert');
 //const selectByIndex = require("webdriverio/build/commands/element/selectByIndex");
 
 const opts = {
@@ -9,7 +9,7 @@ const opts = {
     platformName: "Android",
     platformVersion: "11",
     deviceName: "emulator-5554",
-    app: "C:\\Users\\User\\Desktop\\cs458\\p2\\CS458-Verification-Validation-P2\\android\\app\\build\\outputs\\apk\\debug\\app-debug.apk",
+    app: "C:\\Users\\User\\Desktop\\Klonlama\\android\\app\\build\\outputs\\apk\\debug\\app-debug.apk",
     // appPackage: "io.appium.android.apis",
     // appActivity: ".view.TextFields",
     automationName: "UiAutomator2"
