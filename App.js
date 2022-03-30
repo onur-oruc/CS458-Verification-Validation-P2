@@ -356,7 +356,7 @@ const App: () => Node = () => {
             onChangeText={onChangeSideEffect}
             value={sideEffect}
             underlineColorAndroid="transparent"
-            placeholder="Type here your symptoms"
+            placeholder="Type here side effects"
             placeholderTextColor="gray"
             numberOfLines={2}
             multiline={true}
