@@ -186,6 +186,7 @@ const App: () => Node = () => {
             Covid-19 Vaccine Survey
           </Text>
         </View>
+
         <TextInput
           accessibilityLabel={'namebox'}
           style={styles.input}
@@ -313,6 +314,18 @@ const App: () => Node = () => {
             <Picker.Item label="Turkovac" value="turkovac" />
           </Picker>
         </View>
+        <View>
+          <Text
+            style={{
+              marginLeft: 50,
+              marginRight: 30,
+              marginTop: 20,
+              fontSize: 15,
+              fontWeight: 'bold',
+            }}>
+            Any side effects after vaccination?
+          </Text>
+        </View>
         <View style={styles.textAreaContainer}>
           <TextInput
             accessibilityLabel={'sideEffects'}
@@ -320,8 +333,8 @@ const App: () => Node = () => {
             onChangeText={onChangeSideEffect}
             value={sideEffect}
             underlineColorAndroid="transparent"
-            placeholder="Any side effects after vaccination"
-            placeholderTextColor="red"
+            placeholder="Type here your symptoms"
+            placeholderTextColor="gray"
             numberOfLines={2}
             multiline={true}
           />
@@ -372,7 +385,7 @@ const App: () => Node = () => {
               value={symptoms}
               underlineColorAndroid="transparent"
               placeholder="Enter your symptoms"
-              placeholderTextColor="red"
+              placeholderTextColor="gray"
               numberOfLines={2}
               multiline={true}
             />
