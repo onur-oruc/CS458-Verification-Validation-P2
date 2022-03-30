@@ -73,6 +73,8 @@ const App: () => Node = () => {
   const [checkedPosCase, setCheckedPosCase] = useState('');
   const [symptoms, setSymptoms] = useState('');
   const [disabled, setDisabled] = useState(false);
+  const [validName, setValidName] = useState(true);
+  const [validSurname, setValidSurname] = useState(true);
   const months = {
     0: 'Jan',
     1: 'Feb',
@@ -112,8 +114,14 @@ const App: () => Node = () => {
     if (checkedPosCase === '') {
       return false;
     }
+    if (!validateNameUserName(name)) {
+      return false;
+    }
+    if (!validateNameUserName(surname)) {
+      return false;
+    }
     return true;
-  }
+  };
   const createAlert = () => {
     let alertMessage = '';
     const emptyFields = [];
@@ -158,12 +166,16 @@ const App: () => Node = () => {
       Alert.alert('Missing Fields', alertMessage);
     }
   };
-
+  const validateNameUserName = text => {
+    return /^[a-zA-Z]+$/.test(text);
+  };
   useEffect(() => {
     console.log(date.getDate());
     console.log(date.getFullYear());
     console.log(date.getMonth());
     setDisabled(isDisabled());
+    setValidName(!validateNameUserName(name));
+    setValidSurname(!validateNameUserName(surname));
   }, [name, surname, date, city, gender, selectedVaxValue, checkedPosCase]);
   return (
     <SafeAreaView style={styles.background}>
@@ -186,7 +198,11 @@ const App: () => Node = () => {
             Covid-19 Vaccine Survey
           </Text>
         </View>
-
+        {validName ? (
+          <Text style={{marginLeft: 40, color: 'red'}}>Enter a valid name</Text>
+        ) : (
+          <></>
+        )}
         <TextInput
           accessibilityLabel={'namebox'}
           style={styles.input}
@@ -194,6 +210,13 @@ const App: () => Node = () => {
           value={name}
           placeholder="Name"
         />
+        {validSurname ? (
+          <Text style={{marginLeft: 40, color: 'red'}}>
+            Enter a valid surname
+          </Text>
+        ) : (
+          <></>
+        )}
         <TextInput
           accessibilityLabel={'surnamebox'}
           style={styles.input}
@@ -376,8 +399,9 @@ const App: () => Node = () => {
           </View>
         </View>
         {checkedPosCase === 'yes' ? (
-          <View style={styles.textAreaContainer} accessibilityLabel={'symptomstextbox'}>
-
+          <View
+            style={styles.textAreaContainer}
+            accessibilityLabel={'symptomstextbox'}>
             <TextInput
               accessibilityLabel={'symptoms'}
               style={styles.textArea}
