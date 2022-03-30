@@ -423,11 +423,26 @@ async function getBday(client) {
 async function runTestCases() {
   const client = await wdio.remote(opts);
 
+<<<<<<< HEAD
   await invalidInputTest(client);
   await sendButtonTest(client);
   await RadioButtonTest(client);
   await PCRPosTestCase(client);
   await resetAfterSubmitTest(client);
+=======
+  <<<<<<< HEAD
+
+    await sendButtonTest(client)
+  //await RadioButtonTest(client);
+  //await PCRPosTestCase(client)
+
+
+=======
+    //await sendButtonTest(client)
+    //await RadioButtonTest(client);
+    await PCRPosTestCase(client);
+>>>>>>> e51c498a7ccd483e4cc000ef240cf30d8f11860b
+>>>>>>> 9c5f545261a74f16038b89748f7604df01d2e86d
 
   await client.deleteSession();
 }
