@@ -183,16 +183,16 @@ async function RadioButtonTest(client) {
   }
 
   // click female then male
-  await client.$('~female').click();
   await client.$('~male').click();
-  await sleep(2000);
+  await client.$('~female').click();
+  await client.$('~other').click();
   maleChecked = await client.$('~male').getAttribute('checked');
   femaleChecked = await client.$('~female').getAttribute('checked');
   otherChecked = await client.$('~other').getAttribute('checked');
   try {
-    assert.strictEqual(maleChecked, 'true');
+    assert.strictEqual(maleChecked, 'false');
     assert.strictEqual(femaleChecked, 'false');
-    assert.strictEqual(otherChecked, 'false');
+    assert.strictEqual(otherChecked, 'true');
     console.log('button test 3: successful');
   } catch (error) {
     console.log('Error: ', error);
@@ -248,19 +248,14 @@ async function RadioButtonTest(client) {
   }
 
   // click all of them
-  await client.$('~female').click();
+  await client.$('no').click();
   await client.$('~yes').click();
-  await sleep(2000);
-  femaleChecked = await client.$('~female').getAttribute('checked');
   let yesChecked = await client.$('~yes').getAttribute('checked');
   let noChecked = await client.$('~no').getAttribute('checked');
   console.log('no:', noChecked);
   try {
-    assert.strictEqual(maleChecked, 'false');
-    assert.strictEqual(femaleChecked, 'true');
-    assert.strictEqual(otherChecked, 'false');
-    assert.strictEqual(yesChecked, 'true');
     assert.strictEqual(noChecked, 'false');
+    assert.strictEqual(yesChecked, 'true');
     console.log('button test 7: successful');
   } catch (error) {
     console.log('Error: ', error);
